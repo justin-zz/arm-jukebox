@@ -42,7 +42,7 @@ The script requires certain environment variables to be set. You can configure t
 
 ## Setup Instructions
 
-1. **Install Python and Pip**: Ensure that Python 3.7 or higher is installed on your system along with `pip`.
+1. **Install Python and pip**: Ensure that Python 3.7 or higher is installed on your system along with `pip`.
 
 2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.
 
@@ -83,7 +83,7 @@ The script requires certain environment variables to be set. You can configure t
 
 - **FFmpeg Not Found**: Ensure FFmpeg is installed and its executable is in your system’s PATH.
 - **Miditones Not Found**: Verify that the `miditones` executable is in the correct directory.
-- **Serial Port Errors**: Check that the correct serial port is specified and that your hardware is properly connected.
+- **Serial Port Errors**: Check that the correct serial port is specified/unoccupied and that your hardware is properly connected.
 
 ## License
 
