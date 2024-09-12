@@ -42,11 +42,11 @@ The script requires certain environment variables to be set. You can configure t
 
 ## Setup Instructions
 
-1. **Install Python and pip**: Ensure that Python 3.7 or higher is installed on your system along with `pip`.
+1. **Install Python and pip**: [Download](https://www.python.org/downloads/) Python 3.7 or higher along with `pip`.
 
-2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.
+2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.https://www.python.org/downloads/
 
-3. **Install FFmpeg**: Download and install FFmpeg. Add the FFmpeg bin directory to your system’s PATH.
+3. **Install FFmpeg**: [Download](https://ffmpeg.org/download.html) and install FFmpeg. Add the FFmpeg bin directory to your system’s PATH.
 
 4. **Obtain your OAuth Token from Twitch**: Go through the [guide](https://dev.twitch.tv/docs/api/get-started/).
 
@@ -81,7 +81,7 @@ The script requires certain environment variables to be set. You can configure t
 
 3. **Monitor Output**: The bot will process the song request, and you should see progress and results in the terminal or command prompt where you started the script.
 
-4. **Stop or Toggle Playing**: In the Twitch chat, run `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune.
+4. **Stop or Toggle Playing**: In the Twitch chat, send `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune.
 
 ## Troubleshooting
 
