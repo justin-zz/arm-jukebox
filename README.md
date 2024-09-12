@@ -44,7 +44,7 @@ The script requires certain environment variables to be set. You can configure t
 
 1. **Install Python and pip**: [Download](https://www.python.org/downloads/) Python 3.7 or higher along with `pip`.
 
-2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.https://www.python.org/downloads/
+2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.
 
 3. **Install FFmpeg**: [Download](https://ffmpeg.org/download.html) and install FFmpeg. Add the FFmpeg bin directory to your system’s PATH.
 
