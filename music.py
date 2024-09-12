@@ -19,6 +19,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Suppress TensorFlow INFO and WARNIN
 
 from basic_pitch.inference import predict_and_save, ICASSP_2022_MODEL_PATH
 from twitchio.ext import commands
+from twitchio import Message
 
 # Function to load config.yaml parameters
 def load_config():
@@ -95,33 +96,22 @@ async def get_note_sequence():
 
     return np.array(processed_data, dtype=int)
 
-# Write data to serial port asynchronously
-async def write_to_serial(note_sequence):
 
-    i = 0
-    command = ""
-    command += f"{verbose};!"
-    ser.write(command.encode())
-    while i < len(note_sequence):
-        command = "X;"
-        if note_sequence[i] == 240:  # End of score
-            i += 1
-        if note_sequence[i] >= 144:  # Note on events
-            hz = int(440 * (2 ** ((float(note_sequence[i+1]) - 69) / 12)))
-            command += f"{note_sequence[i] - 144};{hz};!"
-            ser.write(command.encode())
-            i += 2
-        elif note_sequence[i] >= 128:  # Note off events
-            command += f"{note_sequence[i] - 128};0;!"
-            ser.write(command.encode())
-            i += 1
-        else:  # Holding time for notes
-            hold_time = float((note_sequence[i] << 8) + note_sequence[i + 1]) / 1000.0
-            if verbose == "T":
-                print("\nHold ", hold_time * tempo, "s")
-            await asyncio.sleep(hold_time * tempo)
-            i += 2
-    print("End of score reached!")
+def extract_youtube_link(text: str):
+
+    # Regex to match a wider variety of YouTube links
+    youtube_regex = (
+        r'(https?://)?(www\.)?'
+        '(youtube\.com/watch\?v=|'
+        'youtube\.com/embed/|'
+        'youtube\.com/v/|'
+        'youtu\.be/|'
+        'm\.youtube\.com/watch\?v=)'
+        '[\w-]+'
+        r'(?:&\S*)?'
+    )
+    match = re.search(youtube_regex, text)
+    return match.group(0) if match else None
 
 # Combine all steps into a single async task
 async def process_youtube_link(youtube_link):
@@ -140,7 +130,56 @@ async def process_youtube_link(youtube_link):
 
     await write_to_serial(note_sequence)
 
+# Write data to serial port asynchronously
+async def write_to_serial(note_sequence):
 
+    global run, toggle
+
+    i = 0
+    command = ""
+    command += f"{verbose};!"
+    ser.write(command.encode())
+    while i < len(note_sequence) and run:
+        if toggle:
+            command = "X;"
+            if note_sequence[i] == 240:  # End of score
+                i += 1
+            elif note_sequence[i] >= 144:  # Note on events
+                hz = int(440 * (2 ** ((float(note_sequence[i+1]) - 69) / 12)))
+                command += f"{note_sequence[i] - 144};{hz};!"
+                ser.write(command.encode())
+                i += 2
+            elif note_sequence[i] >= 128:  # Note off events
+                command += f"{note_sequence[i] - 128};0;!"
+                ser.write(command.encode())
+                i += 1
+            else:  # Holding time for notes
+                hold_time = float((note_sequence[i] << 8) + note_sequence[i + 1]) / 1000.0
+                if verbose == "T":
+                    print("\nHold ", hold_time * tempo, "s")
+                await asyncio.sleep(hold_time * tempo)
+                i += 2
+        elif not toggle:
+            await asyncio.sleep(0.1)
+    print("\n\nStopped playing. Awaiting next song request!")
+    run = True
+    toggle = True
+
+# Handles 'stop' command for stopping a song entirely (as opposed to toggle)
+async def stop_playing():
+
+    global run
+
+    run = False
+    print("Halted playing!")
+    
+# Handles 'pause' command for pausing a song
+async def toggle_playing():
+
+    global toggle
+
+    toggle = not toggle
+    print("Toggled playing!")
 
 # Twitch bot class to listen for commands
 class TwitchBot(commands.Bot):
@@ -151,14 +190,19 @@ class TwitchBot(commands.Bot):
     async def event_ready(self):
         print(f'Logged in as {self.nick}')
 
-    @commands.command(name='sr')
-    async def song_request(self, ctx):
-        # Parse YouTube link from chat message
-        youtube_link = ctx.message.content.split(' ')[1]
-        print(f"Received YouTube link: {youtube_link}")
-
-        # Run the YouTube processing in the background
-        asyncio.create_task(process_youtube_link(youtube_link))
+    async def event_message(self, message: Message):
+        
+        if message.content == "stop":
+            await stop_playing()
+        elif message.content == "toggle":
+            await toggle_playing()
+        
+        # Look for a YouTube link in the message
+        youtube_link = extract_youtube_link(message.content)
+        if youtube_link:
+            print(f"Received YouTube link: {youtube_link}")
+            # Run the YouTube processing in the background
+            asyncio.create_task(process_youtube_link(youtube_link))
 
 async def read_serial(ser):
     while True:
@@ -182,4 +226,6 @@ if __name__ == "__main__":
     ser = serial.Serial(serial_port, baudrate, timeout=1)
 
     start_time = None
+
+    run = toggle = True
     asyncio.run(main())

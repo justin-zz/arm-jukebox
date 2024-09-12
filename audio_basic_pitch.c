@@ -1,4 +1,4 @@
-// Playtune bytestream for file "audio_basic_pitch.mid" created by MIDITONES V2.4 on Thu Sep 12 09:02:53 2024
+// Playtune bytestream for file "audio_basic_pitch.mid" created by MIDITONES V2.4 on Thu Sep 12 10:33:13 2024
 // command line: c:\Users\jzpal\Documents\GitHub\arm-jukebox\miditones\miditones.exe -t=3 -c=7 audio_basic_pitch 
 //   Only the masked channels were processed: 0007
 const unsigned char PROGMEM score [] = {
