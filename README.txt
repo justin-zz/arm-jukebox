@@ -1,3 +1,5 @@
+
+```markdown
 # Project README
 
 ## Overview
@@ -8,7 +10,7 @@ This project is a Python application that integrates with Twitch and processes Y
 
 - Downloads audio from YouTube videos.
 - Converts MP3 files to MIDI format.
-- Translation of MIDI files to a score of sequential note on/off commands and holds.
+- Translates MIDI files to a score of sequential note on/off commands and holds.
 - Communicates score data over a serial port.
 - Includes a Twitch bot to receive song requests from chat.
 
@@ -26,13 +28,13 @@ pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
 
 - **FFmpeg**: Required by `youtube-dlp` for audio extraction. Make sure FFmpeg is installed and added to your system's PATH. You can download it from [FFmpeg's official website](https://ffmpeg.org/download.html).
 
-- **Miditones**: An external executable for MIDI processing [miditones GitHub repository](https://github.com/LenShustek/miditones/tree/master). This should already be present when cloning this repository.
+- **Miditones**: An external executable for MIDI processing. Download it from the [miditones GitHub repository](https://github.com/LenShustek/miditones/tree/master). This should be placed in the `miditones` directory of your project.
 
 ## Environment Variables
 
 The script requires certain environment variables to be set. You can configure them in the `config.yaml` file, which should be located in the same directory as the script. The following variables are used:
 
-- `verbose`: A flag for verbosity ("F" for false, "T" for true).
+- `verbose`: A flag for verbosity (`"F"` for false, `"T"` for true).
 - `tempo`: Tempo for note duration (default is `1.0`).
 - `baudrate`: Baud rate for serial communication (default is `115200`).
 - `serial_port`: Serial port to which the hardware is connected (default is `"COM5"` on Windows, adjust as needed).
@@ -49,8 +51,7 @@ The script requires certain environment variables to be set. You can configure t
 
 4. **Download and Setup Miditones**: Place the `miditones` executable in the `miditones` directory of your project.
 
-5. **Create and Configure `config.yaml`**:
-   Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
+5. **Create and Configure `config.yaml`**: Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
 
    ```yaml
    verbose: "F"
@@ -88,3 +89,4 @@ The script requires certain environment variables to be set. You can configure t
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
