@@ -2,5 +2,5 @@ verbose: "T"
 tempo: 1.0
 baudrate: 115200
 serial_port: "COM5"
-channel_name: "uorover"
-oauth_token: "f7pyl614if5n92490ba7nwo21iaa83"
+channel_name: ""
+oauth_token: ""
