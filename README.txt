@@ -1,271 +1,90 @@
+# Project README
 
-  MIDITONES: Convert a MIDI file into a simple bytestream of notes
-
-
-  MIDITONES compiles a MIDI music file into a much simplified compact time-ordered stream of
-  commands, so that the music can easily be played on a small microcontroller-based synthesizer
-  that has only simple tone generators. This is on github at www.github.com/LenShustek/miditones.
-
-  Volume ("velocity") and instrument information in the MIDI file can either be
-  discarded or kept. All the tracks are processed and merged into a single time-ordered
-  stream of "note on", "note off", "change instrument" and "delay" commands.
-
-  MIDITONES was written for the "Playtune" series of Arduino and Teensy
-  microcontroller software synthesizers:
-
- www.github.com/LenShustek/arduino-playtune
-   This original version of Playtune, first released in 2011, uses a separate hardware timer
-   for each note to generate a square wave on an output pin. All the pins are then combined
-   with a simple resistor network connected to a speaker and/or amplifier. It can only play
-   as many simutaneous notes as there are timers. There is no volume modulation.
-
- www.github.com/LenShustek/Playtune_poll
-   This second vesion uses only one hardware timer that interrupts periodically at a fast
-   rate, and toggles square waves onto any number of digital output pins.  It also implements
-   primitive volume modulation by changing the duty cycle of the square wave. The number of
-   simultaneous notes is limited only by the number of output pins and the speed of the processor.
+## Overview
 
- www.github.com/LenShustek/Playtune_samp
-    The third version also uses only one hardware timer interrupting frequently, but
-    uses the hardware digital-to-analog converter on high-performance microntrollers like
-    the Teensy to generate an analog wave that is the sum of stored samples of sounds for
-    many different instruments. The samples are scaled to the right frequency and volume,
-    and any number of instrument samples can be used and mapped to MIDI patches. The sound
-    quality is much better, although not in league with real synthesizers. It currently
-    only supports Teensy boards.
+This project is a Python application that integrates with Twitch and processes YouTube audio links. It downloads YouTube videos, converts them to MIDI files, and sends MIDI commands to a serial port to control a few steppers. The application uses various libraries and tools for handling audio processing, MIDI conversion, and communication.
 
- www.github.com/LenShustek/Playtune_synth
-   The fourth version is an audio object for the PJRC Audio Library.
-      https://www.pjrc.com/teensy/td_libs_Audio.html
-   It allows up to 16 simultaneous sound generators that are internally mixed, at
-   the appropriate volume, to produce one monophonic audio stream.
-   Sounds are created from sampled one-cycle waveforms for any number of instruments,
-   each with its own attack-hold-decay-sustain-release envelope. Percussion sounds
-   (from MIDI channel 10) are generated from longer sampled waveforms of a complete
-   instrument strike. Each generator's volume is independently adjusted according to
-   the MIDI velocity of the note being played before all channels are mixed.
+## Features
 
- www.github.com/LenShustek/Playtune_Teensy
-   The fifth version is for the Teensy 3.1/3.2, and uses the four Periodic Interval
-   Timers in the Cortex M4 processor to support up to 4 simultaneous notes.
-   It uses less CPU time than the polling version, but is limited to 4 notes at a time.
-   (This was written to experiment with multi-channel multi-Tesla Coil music playing,
-   where I use Flexible Timer Module FTM0 for generating precise one-shot pulses.
-   But I ultimately switched to the polling version to play more simultaneous notes.)
+- Downloads audio from YouTube videos.
+- Converts MP3 files to MIDI format.
+- Translation of MIDI files to a score of sequential note on/off commands and holds.
+- Communicates score data over a serial port.
+- Includes a Twitch bot to receive song requests from chat.
 
- www.github.com/LenShustek/ATtiny-playtune
-   This is a much simplified version that fits, with a small song, into an ATtiny
-   processor with only 4K of flash memory. It also using polling with only one timer,
-   and avoids multiplication or division at runtime for speed. It was written
-   for the Evil Mad Scientist menorah kit:
-   https://www.evilmadscientist.com/2009/new-led-hanukkah-menorah-kit/
-   https://forum.evilmadscientist.com/discussion/263/making-the-menorah-play-music
-   (Imagine what you can do with the $1 8-pin ATtiny85 with a whopping 8K!)
+## Requirements
 
- MIDITONES may also prove useful for other simple music synthesizers. There are
- various forks of this code, and of the Playtune players, on Githib.
+### Python Packages
 
- *** THE PROGRAM
+This project requires several Python packages. You can install them using `pip`. Run the following command to install all the required packages:
 
-  MIDITONES is written in standard ANSI C and is meant to be executed from the
-  command line.  There is no GUI interface.
+```bash
+pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
+```
 
-  The output can be either a C-language source code fragment that initializes an
-  array with the command bytestream, or a binary file with the bytestream itself.
+### External Tools
 
-  The MIDI file format is complicated, and this has not been tested on all of its
-  variations.  In particular we have tested only format type "1", which seems
-  to be what most of them are.  Let me know if you find MIDI files that it
-  won't digest and I'll see if I can fix it.
+- **FFmpeg**: Required by `youtube-dlp` for audio extraction. Make sure FFmpeg is installed and added to your system's PATH. You can download it from [FFmpeg's official website](https://ffmpeg.org/download.html).
 
-  There is a companion program in the same repository called Miditones_scroll
-  that can convert the bytestream generated by MIDITONES into a piano-player
-  like listing for debugging or annotation. See the documentation near the
-  top of its source code.
-  
-  Additional binaries have been compiled and tested on arch linux, with the files
-  having an additional _linux appended to their name; please contact @Oman395 on
-  github if your distrobution has issues running them.
+- **Miditones**: An external executable for MIDI processing [miditones GitHub repository](https://github.com/LenShustek/miditones/tree/master). This should already be present when cloning this repository.
 
+## Environment Variables
 
-*** THE COMMAND LINE
+The script requires certain environment variables to be set. You can configure them in the `config.yaml` file, which should be located in the same directory as the script. The following variables are used:
 
-  To convert a MIDI file called "chopin.mid" into a command bytestream, execute
+- `verbose`: A flag for verbosity ("F" for false, "T" for true).
+- `tempo`: Tempo for note duration (default is `1.0`).
+- `baudrate`: Baud rate for serial communication (default is `115200`).
+- `serial_port`: Serial port to which the hardware is connected (default is `"COM5"` on Windows, adjust as needed).
+- `channel_name`: Twitch channel name for the bot (default is `"uorover"`).
+- `oauth_token`: OAuth token for Twitch authentication.
 
-     miditones chopin
-     
-  Or on linux, execute
-  
-    ./miditones_linux chopin
+## Setup Instructions
 
-  It will create a file in the same directory called "chopin.c" which contains
-  the C-language statement to intiialize an array called "score" with the bytestream.
+1. **Install Python and Pip**: Ensure that Python 3.7 or higher is installed on your system along with `pip`.
 
+2. **Install Required Packages**: Use the command provided above to install the necessary Python packages.
 
-  The general form for command line execution is this:
+3. **Install FFmpeg**: Download and install FFmpeg. Add the FFmpeg bin directory to your system’s PATH.
 
-     miditones  <options>  <basefilename>
-     
-  Or on linux:
-      
-      ./miditones_linux <options> <basefilename>
+4. **Download and Setup Miditones**: Place the `miditones` executable in the `miditones` directory of your project.
 
-  The <basefilename> is the base name, without an extension, for the input and
-  output files. It can contain directory path information, or not.
+5. **Create and Configure `config.yaml`**:
+   Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
 
-  If the user specifies the full .mid filename, the .mid or .MID extension
-  will be dropped and the remaining name will be used as <basefilename>.
+   ```yaml
+   verbose: "F"
+   tempo: 1.0
+   baudrate: 115200
+   serial_port: "COM5"
+   channel_name: "twitch_channel_name"
+   oauth_token: "your_oauth_token_here"
+   ```
 
-  The input file is <basefilename>.mid, and the output filename(s)
-  are the base file name with .c, .h, .bin, and/or .log extensions.
+6. **Run the Script**: Execute the script using Python:
 
+   ```bash
+   python music.py
+   ```
 
-  The following commonly-used command-line options can be specified:
+## Usage
 
-  -v    Add velocity (volume) information to the output bytestream
+1. **Start the Twitch Bot**: The bot will log in and listen for commands in the specified Twitch channel.
 
-  -i    Add instrument change commands to the output bytestream
+2. **Request a Song**: In the Twitch chat, use the `!sr` command followed by a YouTube link to request a song. For example:
 
-  -pt   Translate notes in the MIDI percussion track to note numbers 128..255
-        and assign them to a tone generator as usual.
+   ```
+   !sr https://www.youtube.com/watch?v=dQw4w9WgXcQ
+   ```
 
-  -d    Generate a self-describing file header that says which optional bytestream
-        fields are present. This is highly recommended if you are using later
-        Playtune players that can check the header to know what data to expect.
+3. **Monitor Output**: The bot will process the song request, and you should see progress and results in the terminal or command prompt where you started the script.
 
-  -b    Generate a binary file with the name <basefilename>.bin, instead of a
-        C-language source file with the name <basefilename>.c.
+## Troubleshooting
 
-  -t=n  Generate the bytestream so that at most "n" tone generators are used.
-        The default is 6 tone generators, and the maximum is 16. The program
-        will report how many notes had to be discarded because there weren't
-        enough tone generators.
+- **FFmpeg Not Found**: Ensure FFmpeg is installed and its executable is in your system’s PATH.
+- **Miditones Not Found**: Verify that the `miditones` executable is in the correct directory.
+- **Serial Port Errors**: Check that the correct serial port is specified and that your hardware is properly connected.
 
- The best combination of options to use with the later Playtune music players is:
-        -v -i -pt -d
+## License
 
- The following are lesser-used command-line options:
-
-  -c=n  Only process the channel numbers whose bits are on in the number "n".
-        For example, -c3 means "only process channels 0 and 1". In addition to
-        decimal, "n" can be also specified in hex using a 0x prefix.
-
-  -dp   Generate Arduino IDE-dependent C code that uses PROGMEM for the bytestream.
-
-  -k=n  Change the musical key of the output by n chromatic notes.
-        -k=-12 goes one octave down, -k=12 goes one octave up, etc.
-
-  -lp   Log input file parsing information to the <basefilename>.log file
-
-  -lg   Log output bytestream generation information to the <basefilename>.log file
-
-  -n=x  Put about "x" items on each line of the C file output
-
-  -p    Only parse the MIDI file, and don't generate an output file.
-        Tracks are processed sequentially instead of being merged into chronological
-        order. This is mostly useful for debugging MIDI file parsing problems.
-
-  -pi   Ignore notes in the MIDI percussion track 9 (also called 10 in some documents)
-
-  -r    Terminate the output file with a "restart" command instead of a "stop" command.
-
-  -sn   Use bytestream generation strategy "n". Two are currently implemented:
-          1:favor track 1 notes instead of all tracks equally
-          2:try to keep each track to its own tone generator
-
-  -h   Give command-line help.
-
-  -showskipped     Display information to the console about each note that had to be
-                   skipped because there weren't enough tone generators.
-
-  -noduplicates    Remove identical notes played on identical instruments for the same time
-                   that come from different tracks. This can reduce the number of tone 
-                   generators needed, and make the file smaller.
-
-  -delaymin=x      Don't generate delays less than x milliseconds long, to reduce the number
-                   of "delay" commands and thus make the bytestream smaller, at the expense of
-                   moving notes slightly. The deficits are accumulated and eventually used,
-                   so that there is no loss of synchronization in the long term.
-                   The default is 0, which means note timing is exact to the millisecond.
-
-  -releasetime=x   Stop each note x milliseconds before it is supposed to end. This results
-                   in better sound separation between notes. It might also allow more notes to
-                   be played with fewer tone generators, since there could be fewer
-                   simultaneous notes playing.
-
-  -notemin=x       The releasetime notwithstanding, don't let the resulting note be reduced
-                   to smaller than x milliseconds. Making releasetime very large and notemin
-                   small results in staccato sounds.
-
-  -attacktime=x    The high-volume attack phase of a note lasts x milliseconds, after which
-                   the lower-volume sustain phase begins, unless the release time makes it
-                   too short. (Only valid with -v.)
-
-  -attacknotemax=x Notes larger than x milliseconds won't have the attack/sustain profile
-                   applied. That allows sustained organ-like pedaling. (Only valid with -v.)
-
-  -sustainlevel=p  The volume level during the sustain phase is p percent of the starting
-                   note volume. The default is 50. (Only valid with -v.)
-
-  -scorename       Use <basefilename> as the name of the score in the generated C code
-                   instead of "score", and name the file <basefilename>.h instead of
-                   <basefilenam>.c. That allows multiple scores to be directly #included
-                   into an Arduino .ino file without modification.
-
-  Note that for backwards compatibility and easier batch-file processing, the equal sign
-  for specifying an option's numeric value may be omitted. Also, numeric values may be
-  specified in hex as 0xhhhh.
-
-*** THE SCORE BYTESTREAM
-
-  The generated bytestream is a series of commands that turn notes on and off,
-  change instruments, and request a delay until the next event time.
-  Here are the details, with numbers shown in hexadecimal.
-
-  If the high-order bit of the byte is 1, then it is one of the following commands,
-  where the two characters are a hex representation of one byte:
-
-    9t nn [vv]
-           Start playing note nn on tone generator t, replacing any previous note.
-           Generators are numbered starting with 0. The note numbers are the MIDI
-           numbers for the chromatic scale, with decimal 69 being Middle A (440 Hz).
-           If the -v option was given, the third byte specifies the note volume.
-
-    8t     Stop playing the note on tone generator t.
-
-    Ct ii  Change tone generator t to play instrument ii from now on. This will
-           only be generated if the -i option was given.
-
-    F0     End of score; stop playing.
-
-    E0     End of score, but start playing again from the beginning. This is
-           generated by the -r option.
-
-  If the high-order bit of the byte is 0, it is a command to delay for a while until
-  the next note change.  The other 7 bits and the 8 bits of the following byte are
-  interpreted as a 15-bit big-endian integer that is the number of milliseconds to
-  wait before processing the next command.  For example,
-
-     07 D0
-
-  would cause a delay of 0x07d0 = 2000 decimal millisconds, or 2 seconds.  Any tones
-  that were playing before the delay command will continue to play.
-
-  If the -d option is specified, the bytestream begins with a little header that tells
-  what optional information will be in the data. This makes the file more self-describing,
-  and allows music players to adapt to different kinds of files. The later Playtune
-  players do that. The header looks like this:
-
-    'Pt'   Two ascii characters that signal the presence of the header
-     nn    The length (in one byte) of the entire header, 6..255
-     ff1   A byte of flag bits, three of which are currently defined:
-               80 volume information is present
-               40 instrument change information is present
-               20 translated percussion notes are present
-     ff2    Another byte of flags, currently undefined
-     tt     The number (in one byte) of tone generators actually used in this music.
-
-     Any subsequent header bytes included in the length are currently undefined
-     and should be ignored by players.
-
-  Len Shustek, 2011 to 2021; see the change log.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
