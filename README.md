@@ -71,13 +71,17 @@ The script requires certain environment variables to be set. You can configure t
 
 1. **Start the Twitch Bot**: The bot will log in and listen for commands in the specified Twitch channel.
 
-2. **Request a Song**: In the Twitch chat, use the `!sr` command followed by a YouTube link to request a song. For example:
+2. **Request a Song**: In the Twitch chat, paste a YouTube link to request a song. For example:
 
    ```
-   !sr https://www.youtube.com/watch?v=dQw4w9WgXcQ
+   https://www.youtube.com/watch?v=dQw4w9WgXcQ
    ```
+
+   Note: YouTube links come in all shapes and forms which most of them are accounted for in RegEx.
 
 3. **Monitor Output**: The bot will process the song request, and you should see progress and results in the terminal or command prompt where you started the script.
+
+4. **Stop or Toggle Playing**: In the Twitch chat, run `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune.
 
 ## Troubleshooting
 
