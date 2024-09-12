@@ -1,0 +1,6 @@
+verbose: "T"
+tempo: 1.0
+baudrate: 115200
+serial_port: "COM5"
+channel_name: ""
+oauth_token: ""
