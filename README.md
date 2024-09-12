@@ -27,7 +27,7 @@ pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
 
 - **FFmpeg**: Required by `youtube-dlp` for audio extraction. Make sure FFmpeg is installed and added to your system's PATH. You can download it from [FFmpeg's official website](https://ffmpeg.org/download.html).
 
-- **Miditones**: An external executable for MIDI processing. Download it from the [miditones GitHub repository](https://github.com/LenShustek/miditones/tree/master). This should be placed in the `miditones` directory of your project.
+- **Miditones**: An external executable for MIDI processing already included in the project. Check it out: [miditones GitHub repository](https://github.com/LenShustek/miditones/tree/master).
 
 ## Environment Variables
 
@@ -37,7 +37,7 @@ The script requires certain environment variables to be set. You can configure t
 - `tempo`: Tempo for note duration (default is `1.0`).
 - `baudrate`: Baud rate for serial communication (default is `115200`).
 - `serial_port`: Serial port to which the hardware is connected (default is `"COM5"` on Windows, adjust as needed).
-- `channel_name`: Twitch channel name for the bot (default is `"uorover"`).
+- `channel_name`: Twitch channel name for the bot.
 - `oauth_token`: OAuth token for Twitch authentication.
 
 ## Setup Instructions
@@ -48,7 +48,7 @@ The script requires certain environment variables to be set. You can configure t
 
 3. **Install FFmpeg**: Download and install FFmpeg. Add the FFmpeg bin directory to your system’s PATH.
 
-4. **Download and Setup Miditones**: Place the `miditones` executable in the `miditones` directory of your project.
+4. **Obtain your OAuth Token from Twitch**: Go through the [guide](https://dev.twitch.tv/docs/api/get-started/).
 
 5. **Create and Configure `config.yaml`**: Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
 
@@ -57,7 +57,7 @@ The script requires certain environment variables to be set. You can configure t
    tempo: 1.0
    baudrate: 115200
    serial_port: "COM5"
-   channel_name: "twitch_channel_name"
+   channel_name: "your_twitch_channel_name"
    oauth_token: "your_oauth_token_here"
    ```
 

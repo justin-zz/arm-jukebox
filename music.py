@@ -36,7 +36,7 @@ def load_config():
         tempo = config.get('tempo', 1.0)
         baudrate = config.get('baudrate', 115200)
         serial_port = config.get('serial_port', "COM5")
-        channel_name = config.get('channel_name', "uorover")
+        channel_name = config.get('channel_name', "")
         oauth_token = config.get('oauth_token', "")
     else:
         print("Warning: config.yaml is empty or not formatted correctly.")
