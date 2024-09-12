@@ -1,9 +1,9 @@
 
-# Project README
+# Robotic Arm Jukebox
 
 ## Overview
 
-This project is a Python application that integrates with Twitch and processes YouTube audio links. It downloads YouTube videos, converts them to MIDI files, and sends MIDI commands to a serial port to control a few steppers. The application uses various libraries and tools for handling audio processing, MIDI conversion, and communication.
+This project is a Python application that integrates with Twitch and processes YouTube audio links. It downloads YouTube videos, converts them to MIDI files, and sends MIDI commands to a serial port to control a few steppers on a robotic arm. The application uses various libraries and tools for handling audio processing, MIDI conversion, and communication.
 
 ## Features
 
