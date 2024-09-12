@@ -1,5 +1,4 @@
 
-```markdown
 # Project README
 
 ## Overview
@@ -89,4 +88,3 @@ The script requires certain environment variables to be set. You can configure t
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
