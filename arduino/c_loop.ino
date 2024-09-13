@@ -36,26 +36,6 @@ void loop()
       steppers[channel].speed = getSafeSpeed(atoi(tmp));
       
       steppers[channel].driver.setMaxSpeed(steppers[channel].speed);
-      
-      if (verbose) {
-        Serial.print(steppers[channel].NAME);
-        if (steppers[channel].speed > 0) {
-          Serial.print(" @ ");
-          Serial.print(steppers[channel].speed);
-          Serial.print("Hz, ");
-        } else {
-          Serial.print(" off, ");
-        }
-      }
-
-    } else if (!strcmp(tmp, "T")) {
-      verbose = true;
-      Serial.println("Verbose on!");
-    } else if (!strcmp(tmp, "F")) {
-      verbose = false;
-      Serial.println("Verbose off!");
-    } else {
-      Serial.println("Invalid command received!");
     }
   } // end of serial available
 

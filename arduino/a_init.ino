@@ -11,7 +11,7 @@ enum Stepper_ID {
     WR,
     WP,
     EE,
-    LAST//not a motor
+    LAST//not a motor; makes iteration more intuitive
 };
 
 //Define what variables to use for our motor
@@ -25,9 +25,9 @@ struct Stepper {
 };
 
 //Create the motor objects
-Stepper wr = {AccelStepper (AccelStepper::DRIVER, 10,  11), "Roll", 1000000, 4, 0, 10000};
-Stepper wp = {AccelStepper (AccelStepper::DRIVER, 8,   9), "Pitch", 1000000, 16, 0, 10000};
-Stepper ee = {AccelStepper (AccelStepper::DRIVER, 12,  13), "EE", 1000000, 5, 0, 10000};
+Stepper wr = {AccelStepper (AccelStepper::DRIVER, 10,  11), "Roll",  1000000, 4, 0.0, 10000};
+Stepper wp = {AccelStepper (AccelStepper::DRIVER, 8,    9), "Pitch", 500, 16, 0.0, 10000};
+Stepper ee = {AccelStepper (AccelStepper::DRIVER, 12,  13), "EE",    400, 5, 0.0, 10000};
 
 //Pack into an array for iterability
 Stepper steppers[] = {wr, wp, ee};

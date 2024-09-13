@@ -10,5 +10,4 @@ void setup()
     pinMode(steppers[i].BOOT_PIN, OUTPUT);
     digitalWrite(steppers[i].BOOT_PIN, HIGH);
   }
-
 }
