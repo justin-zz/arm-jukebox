@@ -33,10 +33,10 @@ pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
 
 The script requires certain environment variables to be set. You can configure them in the `config.yaml` file, which should be located in the same directory as the script. The following variables are used:
 
-- `verbose`: A flag for verbosity (`"F"` for false, `"T"` for true).
+- `verbose`: A flag for verbosity (`"False"` or `"True"`).
 - `tempo`: Tempo for note duration (default is `1.0`).
 - `baudrate`: Baud rate for serial communication (default is `115200`).
-- `serial_port`: Serial port to which the hardware is connected (default is `"COM5"` on Windows, adjust as needed).
+- `serial_port`: Serial port to which the Arduino is connected (default is `"COM5"` on Windows, adjust as needed). If left empty, it will attempt to connect to the first serial device it can find (not recommended).
 - `channel_name`: Twitch channel name for the bot.
 - `oauth_token`: OAuth token for Twitch authentication.
 
@@ -69,19 +69,17 @@ The script requires certain environment variables to be set. You can configure t
 
 ## Usage
 
-1. **Start the Twitch Bot**: The bot will log in and listen for commands in the specified Twitch channel.
-
-2. **Request a Song**: In the Twitch chat, paste a YouTube link to request a song. For example:
+1. **Play any YouTube Audio**: In the Twitch chat, paste a YouTube link to request it be played. For example:
 
    ```
    https://www.youtube.com/watch?v=dQw4w9WgXcQ
    ```
+   or alternatively play a custom MIDI file in Twitch chat
+   ```
+   custom custom_song.mid
+   ```
 
-   Note: YouTube links come in all shapes and forms which most of them are accounted for in RegEx.
-
-3. **Monitor Output**: The bot will process the song request, and you should see progress and results in the terminal or command prompt where you started the script.
-
-4. **Stop or Toggle Playing**: In the Twitch chat, send `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune.
+2. **Stop, Toggle or Replay**: In the Twitch chat, send `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune or `replay` to play the last song.
 
 ## Troubleshooting
 
