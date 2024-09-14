@@ -34,10 +34,9 @@ pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
 The script requires certain environment variables to be set. You can configure them in the `config.yaml` file, which should be located in the same directory as the script. The following variables are used:
 
 - `verbose`: A flag for verbosity (`"False"` or `"True"`).
-- `tempo`: Tempo for note duration (default is `1.0`).
+- `tempo`: Tempo or playback for note duration (default is `1.0`).
 - `baudrate`: Baud rate for serial communication (default is `115200`).
-- `serial_port`: Serial port to which the Arduino is connected (default is `"COM5"` on Windows, adjust as needed). If left empty, it will attempt to connect to the first serial device it can find (not recommended).
-- `channel_name`: Twitch channel name for the bot.
+- `serial_port`: Serial port to which the Arduino is connected. Empty by default, the script will automatically connect to the correct port.
 - `oauth_token`: OAuth token for Twitch authentication.
 
 ## Setup Instructions
