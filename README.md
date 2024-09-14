@@ -74,9 +74,9 @@ The script requires certain environment variables to be set. You can configure t
    ```
    https://www.youtube.com/watch?v=dQw4w9WgXcQ
    ```
-   or alternatively play a custom MIDI file in Twitch chat
+   or alternatively play a custom MIDI file by typing in the chat:
    ```
-   custom custom_song.mid
+   custom still_alive.mid
    ```
 
 2. **Stop, Toggle or Replay**: In the Twitch chat, send `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune or `replay` to play the last song.
