@@ -25,7 +25,7 @@ struct Stepper {
 };
 
 //Create the motor objects
-Stepper wr = {AccelStepper (AccelStepper::DRIVER, 10,  11), "Roll",  1000000, 4, 0.0, 10000};
+Stepper wr = {AccelStepper (AccelStepper::DRIVER, 10,  11), "Roll",  100000, 4, 0.0, 10000};
 Stepper wp = {AccelStepper (AccelStepper::DRIVER, 8,    9), "Pitch", 500, 16, 0.0, 10000};
 Stepper ee = {AccelStepper (AccelStepper::DRIVER, 12,  13), "EE",    400, 5, 0.0, 10000};
 

@@ -3,7 +3,7 @@ void loop()
 {
 
   // Steppers will move back and forth based on the MAX_RANGE
-  for (int i = WP ; i < LAST ; i++) {
+  for (int i = WR ; i < LAST ; i++) {
     if (steppers[i].driver.distanceToGo() == 0)
       steppers[i].driver.moveTo(-steppers[i].driver.currentPosition());
     steppers[i].driver.run();
@@ -35,17 +35,20 @@ void loop()
       tmp = strtok(NULL, ";");
       steppers[channel].speed = getSafeSpeed(atoi(tmp));
       
+      steppers[channel].driver.setMaxSpeed(steppers[channel].speed/2);
       steppers[channel].driver.setMaxSpeed(steppers[channel].speed);
+    } else if (!strcmp(tmp, "ARDUINO?")) {
+      Serial.print("ARM!");
     }
   } // end of serial available
 
 } // end of loop
 
-// Ensure speeds fall between 100 - 1000 range (G2 - C6)
+// Ensure speeds fall between 100 - 1050 range (G2 - C6)
 float getSafeSpeed(float speed) {
       if (speed < 100)
         speed = 0;
-      while (speed > 1000)
+      while (speed > 1050)
         speed /= 2;
   return speed;
 }
