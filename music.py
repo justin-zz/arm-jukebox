@@ -7,6 +7,7 @@ import yaml         # config file
 import re           # handles regex for yt links and more
 import numpy as np  # math and matrices
 import asyncio      # required for twitch bot
+import pygame.midi  # testing note sequence
 import yt_dlp as youtube_dl # download yt audio
 from twitchio.ext import commands   # access to callback commands
 from twitchio import Message        # access to chat messages & processing thereof
@@ -50,12 +51,21 @@ class TwitchBot(commands.Bot):
             note_sequence = await midi_to_notes("audio_basic_pitch")
             await write_to_serial(note_sequence)
         
-        if (message.content.split(" ")[0] == "custom"):
+        elif (message.content.split(" ")[0] == "custom"):
             try:
                 stop = True
                 midi_file = message.content.split(" ")[1]
                 note_sequence = await midi_to_notes(midi_file)
                 await write_to_serial(note_sequence)
+            except Exception as e:
+                print(f"File error while attempting to convert mid file: {e}")
+
+        elif (message.content.split(" ")[0] == "test"):
+            try:
+                stop = True
+                midi_file = message.content.split(" ")[1]
+                note_sequence = await midi_to_notes(midi_file)
+                await test_song(note_sequence)
             except Exception as e:
                 print(f"File error while attempting to convert mid file: {e}")
         
@@ -113,6 +123,56 @@ async def write_to_serial(note_sequence):
 
     elapsed_time = time.time() - start_time
     print(f"\nSong played for: {elapsed_time:.2f} seconds")
+
+    stop = False
+    toggle = True
+
+# Mimics write_to_serial by playing the tune using pygame
+async def test_song(note_sequence):
+
+    global stop, toggle
+
+    # Timer start when link has been received (until music starts playing on the arm)
+    start_time = time.time()
+    
+    stop = False
+    toggle = True
+    pygame.midi.init()
+    player = pygame.midi.Output(0)
+    player.set_instrument(0)
+
+    i = hz = 0
+    while i < len(note_sequence) and not stop:
+        if toggle:
+            if note_sequence[i] == 240:  # End of score
+                i += 1
+            elif note_sequence[i] >= 144:  # Note on events
+                hz = note_sequence[i+1]
+                channel = note_sequence[i] - 144
+                player.note_on(hz, 127)
+                i += 2
+                if verbose == "True":
+                    print(f"Channel {channel} playing {hz}Hz, ",end=' ')
+            elif note_sequence[i] >= 128:  # Note off events
+                channel = note_sequence[i] - 128
+                player.note_off(hz, 127)
+                i += 1
+                if verbose == "True":
+                    print(f"Channel {channel} off, ",end=' ')
+            else:  # Holding time for notes
+                hold_time = float((note_sequence[i] << 8) + note_sequence[i + 1]) / 1000.0
+                if verbose == "True":
+                    print("\nHold ", hold_time / tempo, "s")
+                await asyncio.sleep(hold_time / tempo)
+                i += 2
+        elif not toggle:
+            await asyncio.sleep(0.1)
+
+    elapsed_time = time.time() - start_time
+    print(f"\nSong played for: {elapsed_time:.2f} seconds")
+
+    del player
+    pygame.midi.quit()  
 
     stop = False
     toggle = True
