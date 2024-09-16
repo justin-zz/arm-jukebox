@@ -44,7 +44,7 @@ The script requires certain environment variables to be set. You can configure t
 5. **Configure `config.yaml`**: Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
 
    ```yaml
-   verbose: "F"
+   verbose: "True"
    tempo: 1.0
    baudrate: 115200
    serial_port: "COM5"
