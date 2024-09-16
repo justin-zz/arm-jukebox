@@ -48,10 +48,10 @@ void loop()
 
 }
 
-// Ensure speeds fall between 100 - 1050 range (G2 - C6)
+// Ensure speeds fall between a note range
 // Note: lowest note may not be G2 but probably higher/different depending on the motor/load/etc
 float getSafeSpeed(float speed) {
-      if (speed < 100)
+      if (speed < 160)
         speed = 0;
       while (speed > 1050) // Halving == going down an octave; so C6 -> C5
         speed /= 2;

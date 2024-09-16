@@ -1,4 +1,4 @@
-// Playtune bytestream for file "still_alive.mid" created by MIDITONES V2.4 on Sun Sep 15 05:35:18 2024
+// Playtune bytestream for file "still_alive.mid" created by MIDITONES V2.4 on Sun Sep 15 21:19:38 2024
 // command line: c:\Users\jzpal\Documents\GitHub\arm-jukebox\miditones\miditones.exe -t=3 -c=7 still_alive 
 //   Only the masked channels were processed: 0007
 const unsigned char PROGMEM score [] = {
