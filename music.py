@@ -81,6 +81,10 @@ class TwitchBot(commands.Bot):
 async def write_to_serial(note_sequence):
 
     global stop, toggle
+    
+    command = "steppers_reboot;!" # Reboot stepper drivers since they can sometimes stop moving the steppers 
+    ser.write(command.encode())
+    await asyncio.sleep(0.25)     # Wait for them to reboot
 
     # Timer start when link has been received (until music starts playing on the arm)
     start_time = time.time()

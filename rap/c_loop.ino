@@ -41,8 +41,14 @@ void loop()
       steppers[channel].driver.setMaxSpeed(steppers[channel].speed/2); // Added to make it sound better
       steppers[channel].driver.setMaxSpeed(steppers[channel].speed);
 
-    } else if (!strcmp(tmp, "ARDUINO?")) {
-      Serial.print("ARM!");
+    } else if (!strcmp(tmp, "steppers_reboot")) {
+      for (int i = WR ; i < LAST ; i++) 
+        digitalWrite(steppers[i].BOOT_PIN, LOW);
+      delay(50);
+      for (int i = WR ; i < LAST ; i++) 
+        digitalWrite(steppers[i].BOOT_PIN, HIGH);
+    } else if (!strcmp(tmp, "ARDUINO?")) { // Request from script
+      Serial.print("ARM!"); // Response to script; helping the script identify the correct Arduino
     }
   } // end of serial available
 
