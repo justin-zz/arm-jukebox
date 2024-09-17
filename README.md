@@ -3,15 +3,7 @@
 
 ## Overview
 
-This project is a Python application that integrates with Twitch and processes YouTube audio links. It downloads YouTube videos, converts them to MIDI files, and sends MIDI commands to a serial port to control a few steppers on a robotic arm. The application uses various libraries and tools for handling audio processing, MIDI conversion, and communication.
-
-## Features
-
-- Downloads audio from YouTube videos.
-- Converts MP3 files to MIDI format.
-- Translates MIDI files to a score of sequential note on/off commands and holds.
-- Communicates score data over a serial port.
-- Includes a Twitch bot to receive song requests from chat.
+This project is a Python & Arduino application designed to be run on the Windows OS. It downloads audio from YouTube links, converts them to MIDI files using Spotify's ACASSP 2022 model, converts the MIDI file into a sequence of commands sent to a serial port to control a few steppers on a robotic arm. 
 
 ## Requirements
 
@@ -20,7 +12,7 @@ This project is a Python application that integrates with Twitch and processes Y
 This project requires several Python packages. You can install them using `pip`. Run the following command to install all the required packages:
 
 ```bash
-pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio
+pip install pyserial pydub numpy youtube-dlp tensorflow basic-pitch twitchio pygame
 ```
 
 ### External Tools
@@ -49,18 +41,20 @@ The script requires certain environment variables to be set. You can configure t
 
 4. **Obtain your OAuth Token from Twitch**: Go through the [guide](https://dev.twitch.tv/docs/api/get-started/).
 
-5. **Create and Configure `config.yaml`**: Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
+5. **Configure `config.yaml`**: Create a `config.yaml` file in the project directory and configure it with the required parameters. Here is a sample configuration:
 
    ```yaml
-   verbose: "F"
+   verbose: "True"
    tempo: 1.0
    baudrate: 115200
    serial_port: "COM5"
    channel_name: "your_twitch_channel_name"
    oauth_token: "your_oauth_token_here"
    ```
+   
+6. **Upload Arduino Code**: on the Arduino IDE, ensure that you have everything setup such as the `board` and `port` and upload the code provided. The arduino sketch can be found inside the `rap` folder.
 
-6. **Run the Script**: Execute the script using Python:
+7. **Run the Script**: Execute the script using Python:
 
    ```bash
    python music.py
