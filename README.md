@@ -3,7 +3,7 @@
 
 ## Overview
 
-This project is a Python & Arduino application that integrates with Twitch and processes YouTube audio links. It downloads audio from YouTube links, converts them to MIDI files using Spotify's ACASSP 2022 model, converts the MIDI file into a sequence of commands sent to a serial port to control a few steppers on a robotic arm.
+This project is a Python & Arduino application designed to be run on the Windows OS. It downloads audio from YouTube links, converts them to MIDI files using Spotify's ACASSP 2022 model, converts the MIDI file into a sequence of commands sent to a serial port to control a few steppers on a robotic arm. 
 
 ## Requirements
 
