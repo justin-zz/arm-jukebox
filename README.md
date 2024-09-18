@@ -67,10 +67,16 @@ The script requires certain environment variables to be set. You can configure t
    ```
    https://www.youtube.com/watch?v=dQw4w9WgXcQ
    ```
-   or alternatively play a custom MIDI file by typing in the chat:
+   Or alternatively play a custom MIDI file by typing in the chat:
    ```
-   custom still_alive.mid
+   custom still_alive
    ```
+   Finally, if you want to test without a serial device/steppers, just run:
+   ```
+   test still_alive
+   ```
+   this will play the MIDI as it should on the steppers.
+
 
 2. **Stop, Toggle or Replay**: In the Twitch chat, send `stop` to quit playing a song completely or alternatively `toggle` to pause or resume playing a tune or `replay` to play the last song.
 
